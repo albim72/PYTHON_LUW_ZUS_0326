@@ -44,3 +44,20 @@ def slow_function(n):
 
 print(slow_function(1))
 print(slow_function(13))
+
+#zadanie 3 - dekroator z parametrem
+def require_role(required_role):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(user_role,*args, **kwargs):
+           if user_role != required_role:
+               raise PermissionError(f"User {user_role} does not have permission to access this function")
+           return func(user_role,*args, **kwargs)
+        return wrapper
+    return decorator
+
+@require_role("admin")
+def delete_user(user_role,username):
+    return f"User {username} deleted"
+
+print(delete_user("user", "John"))
