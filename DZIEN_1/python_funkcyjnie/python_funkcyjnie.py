@@ -74,3 +74,58 @@ high_filter = make_filter(100)
 data = [50,120,80,200]
 filtered_data = list(filter(high_filter, data))
 print(filtered_data)
+
+#bonus - styl functional vs list comprehension
+data = [5,2,6,8,36,9,245,9,43,90,32]
+
+result = list(
+    map(lambda x: x * x, filter(lambda x: x % 2 == 0, data))
+)
+print(result)
+
+print("_"*70)
+
+result = [x*x for x in data if x%2==0]
+print(result)
+
+
+#wersja nowoczesna - pipeline
+def is_even(x):
+    return x % 2 == 0
+
+def grater_then_2(x):
+    return x > 2
+
+def square(x):
+    return x * x
+
+from functools import reduce
+
+def compose(*functions):
+    return lambda x: reduce(lambda acc, f: f(acc), functions, x)
+
+#pipeline
+data = [54,3,54,2,4578,3,2,8,9,1,56,78,31]
+
+pipeline = compose(square)
+
+result = (
+    pipeline(x)
+    for x in data
+    if is_even(x) and grater_then_2(x)
+)
+
+print(list(result))
+
+def add_one(x):
+    return x + 1
+
+pipeline = compose(add_one, square)
+
+result = (
+    pipeline(x)
+    for x in data
+    if is_even(x) and grater_then_2(x)
+)
+
+print(list(result))
