@@ -16,3 +16,18 @@ print(type(mode))
 mode = sport_mode
 print(mode(100))
 print(type(mode))
+
+#ex2 - funkcja jako argument
+#system punktacji
+
+def score_by_time(time):
+    return max(0,500-time)
+
+def score_by_consistancy(time):
+    return 1000/(1+time)
+
+def evaluate(time, scoring_strategy):
+    return scoring_strategy(time)
+
+print(evaluate(100, score_by_time))
+print(evaluate(300, score_by_consistancy))
