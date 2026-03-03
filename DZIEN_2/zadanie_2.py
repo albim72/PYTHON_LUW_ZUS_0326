@@ -45,15 +45,20 @@ def vat(price, rate=0.23):
 
 
 @accumulate_results
-def discount(price, percent):
+def discount(price, percent, opt):
     """Zwraca cenę po rabacie procentowym."""
     return price * (1 - percent / 100)
 
-
+@accumulate_results
+def policz(a,b,c,d):
+    return ((a*b)+8)/(c-2*d)
 # Testy (przykładowe wywołania)
 
 vat(100)              # 23.0
 vat(200)              # 46.0
-discount(300, 10)      # 270.0
-discount(120, 25)      # 90.0
+policz(10,2,3,4)
+discount(300, 10,2)      # 270.0
+discount(120, 25,3)      # 90.0
 vat(50, rate=0.08)     # 4.0
+policz(3,1,6,11)
+policz(67,9,234,-8)
