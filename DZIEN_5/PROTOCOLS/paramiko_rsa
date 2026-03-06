@@ -1,4 +1,5 @@
 import paramiko
+import asyncssh #przy dużej liczbie połączń  50,100,500 ??
 
 
 HOST = "test.rebex.net"
