@@ -1,45 +1,44 @@
 import os
 import paramiko
+from scp import SCPClient
+from concurrent.futures import ThreadPoolExecutor
 
 
 HOST = "test.rebex.net"
-PORT = 22
 USERNAME = "demo"
 PASSWORD = "password"
 
+LOCAL_DIR = "data"
 REMOTE_DIR = "/pub/example"
-LOCAL_DIR = "backup"
 
 
-def download_directory(sftp, remote_path, local_path):
+def upload_file(filename):
 
-    os.makedirs(local_path, exist_ok=True)
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    for item in sftp.listdir_attr(remote_path):
+    ssh.connect(HOST, username=USERNAME, password=PASSWORD)
 
-        remote_item = remote_path + "/" + item.filename
-        local_item = os.path.join(local_path, item.filename)
+    scp = SCPClient(ssh.get_transport())
 
-        if paramiko.S_ISDIR(item.st_mode):
+    local_path = os.path.join(LOCAL_DIR, filename)
+    remote_path = REMOTE_DIR + "/" + filename
 
-            download_directory(sftp, remote_item, local_item)
+    print("wysyłam:", filename)
 
-        else:
-            print("Pobieram:", remote_item)
-            sftp.get(remote_item, local_item)
+    scp.put(local_path, remote_path)
+
+    scp.close()
+    ssh.close()
 
 
 def main():
 
-    transport = paramiko.Transport((HOST, PORT))
-    transport.connect(username=USERNAME, password=PASSWORD)
+    files = os.listdir(LOCAL_DIR)
 
-    sftp = paramiko.SFTPClient.from_transport(transport)
+    with ThreadPoolExecutor(max_workers=4) as executor:
 
-    download_directory(sftp, REMOTE_DIR, LOCAL_DIR)
-
-    sftp.close()
-    transport.close()
+        executor.map(upload_file, files)
 
 
 if __name__ == "__main__":
