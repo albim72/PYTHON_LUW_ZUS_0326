@@ -1,0 +1,22 @@
+mam do wykonianie projekt:
+
+Zadanie projektowe: SSH Multi-Server Runner
+Napisz program w Pythonie, który:
+1.	wczytuje listę serwerów z pliku servers.json
+2.	łączy się z każdym serwerem przez SSH
+3.	wykonuje zestaw poleceń:
+o	hostname
+o	whoami
+o	uptime
+o	df -h
+4.	zapisuje wynik działania każdej komendy
+5.	obsługuje błędy połączenia i timeout
+6.	generuje raport końcowy w pliku report.csv
+7.	wykonuje połączenia równolegle z użyciem wątków
+Wersja dodatkowa
+Dodaj:
+•	pomiar czasu wykonania komend
+•	logowanie do pliku app.log
+•	podsumowanie liczby sukcesów i błędów
+
+chciałby go zbudować krok po kroku świadomie... analizując każdy element, zacznijmy od rozmisania kolejnych etapów tworzenie tego projektu. po każdym kroku chciałbym go testować w pycharm i po pozytywnym teście rozbudowaywać.
